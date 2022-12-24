@@ -57,4 +57,4 @@ URL: `http://localhost:{PORT}/admin/`
 **A:** You can request a new receipt email - https://codeshack.io/receiptresend/.
 
 ### References 
-Based on this tutorial https://codeshack.io/basic-login-system-nodejs-express-mysql/
+Based on this tutorial https://codeshack.io/basic-login-system-nodejs-express-mysql/, from https://codeshack.io/
