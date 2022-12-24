@@ -39,11 +39,11 @@ nodemon --use_strict main.js
 node main.js
 ```
 
-**6.** If you've successfully started the server, you can navigate to http://localhost:{PORT}/ in your browser. It should take you to the login form.
+**6.** If you've successfully started the server, you can navigate to `http://localhost:{PORT}/` in your browser. It should take you to the login form.
 
 ### Admin Panel
 
-URL: http://localhost:{PORT}/admin/
+URL: `http://localhost:{PORT}/admin/`
 
 ### Email Setup
 
