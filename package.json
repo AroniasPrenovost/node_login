@@ -2,7 +2,7 @@
   "name": "node_login",
   "version": "1.2.0",
   "description": "Advanced Login & Registration System",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

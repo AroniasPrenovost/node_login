@@ -1,2 +1,2 @@
-nodemon --use_strict main.js -e js,mjs,json,html,css,scss
+nodemon --use_strict index.js -e js,mjs,json,html,css,scss
 pause
