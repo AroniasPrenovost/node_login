@@ -51,10 +51,7 @@ URL: `http://localhost:{PORT}/admin/`
 **A:** You need a working SMTP mail server and make sure your firewall is not blocking ports `25`, `58`, `465`, `110`, etc. This shouldn't be a problem on most hosting providers or Linux servers (built-in email server).
 
 **Q:** Why am I receiving a MySQL error?\
-**A:** Make sure you update the MySQL details in the "main.js" file. You might need to change the hostname if yours is different and/or port number, and make sure you've executed the correct SQL file in MySQL Workbench.
-
-**Q:** How do I download the zip file again if I've deleted it?\
-**A:** You can request a new receipt email - https://codeshack.io/receiptresend/.
+**A:** Make sure you update the MySQL connection credentials in the `.env` file. You might need to change the hostname if yours is different and/or port number, and make sure you've executed the correct SQL file in MySQL Workbench.
 
 ### References 
 Based on this tutorial https://codeshack.io/basic-login-system-nodejs-express-mysql/, from https://codeshack.io/
