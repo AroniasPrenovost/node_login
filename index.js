@@ -540,7 +540,12 @@ app.get('/home', (request, response) => isLoggedin(request, settings => {
 	response.redirect('/');
 }));
 
-// http://localhost:{PORT}/profile - display the profile page
+////
+//
+// GET - http://localhost:{PORT}/profile - display the profile page
+//
+////
+
 app.get('/profile', (request, response) => isLoggedin(request, settings => {
 	// Get all the users account details so we can populate them on the profile page
 	connection.query('SELECT * FROM accounts WHERE username = ?', [request.session.account_username], (error, accounts, fields) => {
