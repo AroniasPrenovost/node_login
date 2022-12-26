@@ -12,6 +12,7 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 const { Console } = require('console');
 const { NodeResolveLoader } = require('nunjucks');
+const logger = require('morgan');
 require('dotenv').config();
 
 // Unique secret key
@@ -54,6 +55,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(cookieParser());
+// logging
+if (app.get('env') == 'production') {
+  // app.use(logger('common', { skip: function(req, res) { return res.statusCode < 400 }, stream: __dirname + '/../logger.log' }));
+	app.use(logger('dev'));
+} else {
+  app.use(logger('dev'));
+}
 
 ////
 //
