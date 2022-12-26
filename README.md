@@ -1,3 +1,5 @@
+# Node Login App
+
 ### Project Components
 
 * NodeJS - https://nodejs.org/
@@ -54,4 +56,9 @@ URL: `http://localhost:{PORT}/admin/`
 **A:** Make sure you update the MySQL connection credentials in the `.env` file. You might need to change the hostname if yours is different and/or port number, and make sure you've executed the correct SQL file in MySQL Workbench.
 
 ### References 
+
+# AWS setup
+https://javascript.plainenglish.io/deploy-node-js-apps-on-aws-from-scratch-c227c44eeb2
+
+# NodeJS
 Based on this tutorial https://codeshack.io/basic-login-system-nodejs-express-mysql/, from https://codeshack.io/

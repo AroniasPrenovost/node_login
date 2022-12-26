@@ -55,7 +55,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(cookieParser());
 
-// http://localhost:{PORT}/ - display login page
+////
+//
+// GET - http://localhost:{PORT}/ - display login page
+//
+////
+
 app.get(['/', '/login'], (request, response) => isLoggedin(request, () => {
 	// User is logged in, redirect to home page
 	response.redirect('/home');
@@ -67,7 +72,13 @@ app.get(['/', '/login'], (request, response) => isLoggedin(request, () => {
 	// User is not logged in, render login template
 	response.render('index.html', { token: token });
 }));
-// http://localhost:{PORT}/ - authenticate the user
+
+////
+//
+// POST - http://localhost:{PORT}/ - authenticate the user
+//
+////
+
 app.post(['/', '/login'], (request, response) => init(request, settings => {
 	// Create variables and assign the post data
 	let username = request.body.username;
@@ -150,7 +161,12 @@ app.post(['/', '/login'], (request, response) => init(request, settings => {
 	}
 }));
 
-// http://localhost:{PORT}/register - display the registration page
+////
+//
+// GET - http://localhost:{PORT}/register - display the registration page
+//
+////
+
 app.get('/register', (request, response) => isLoggedin(request, () => {
 	// User is logged in, redirect to home page
 	response.redirect('/home');
@@ -272,7 +288,12 @@ app.post('/register', (request, response) => init(request, settings => {
 	}
 }));
 
-// http://localhost:{PORT}/activate/<email>/<code> - activate an account
+////
+//
+// GET - http://localhost:{PORT}/activate/<email>/<code> - activate an account
+//
+////
+
 app.get('/activate/:email/:code', (request, response) => {
 	// Check if the email and activation code match in the database
 	connection.query('SELECT * FROM accounts WHERE email = ? AND activation_code = ?', [request.params.email, request.params.code], (error, accounts) => {
@@ -296,7 +317,12 @@ app.get('/activate/:email/:code', (request, response) => {
 	});
 });
 
-// http://localhost:{PORT}/forgotpassword - user can use this page if they have forgotten their password
+////
+//
+// GET - http://localhost:{PORT}/forgotpassword - user can use this page if they have forgotten their password
+//
+////
+
 app.get('/forgotpassword', (request, response) => {
 	// Render forgot password template and output message
 	response.render('forgotpassword.html');	
@@ -341,7 +367,12 @@ app.post('/forgotpassword', (request, response) => init(request, settings => {
 	}
 }));
 
-// http://localhost:{PORT}/resetpassword - display the reset form
+////
+//
+// GET - http://localhost:{PORT}/resetpassword - display the reset form
+//
+////
+
 app.get('/resetpassword/:email/:code', (request, response) => {
 	// Make sure the params are specified
 	if (request.params.email && request.params.code) {
@@ -361,7 +392,13 @@ app.get('/resetpassword/:email/:code', (request, response) => {
 		response.end();		
 	}
 });
-// http://localhost:{PORT}/resetpassword - update password
+
+////
+//
+// POST - http://localhost:{PORT}/resetpassword - update password
+//
+////
+
 app.post('/resetpassword/:email/:code', (request, response) => {
 	// Make sure the params are specified
 	if (request.params.email && request.params.code) {
@@ -404,7 +441,12 @@ app.post('/resetpassword/:email/:code', (request, response) => {
 	}
 });
 
-// http://localhost:{PORT}/twofactor - twofactor authentication
+////
+//
+// GET - http://localhost:{PORT}/twofactor - twofactor authentication
+//
+////
+
 app.get('/twofactor', (request, response) => init(request, settings => {
 	// Check if the tfa session variables are declared
 	if (request.session.tfa_id && request.session.tfa_email) {
@@ -436,7 +478,13 @@ app.get('/twofactor', (request, response) => init(request, settings => {
 		response.redirect('/');
 	}	
 }));
-// http://localhost:{PORT}/twofactor - twofactor authentication
+
+////
+//
+// POST - http://localhost:{PORT}/twofactor - twofactor authentication
+//
+////
+
 app.post('/twofactor', (request, response) => {
 	// Check if the tfa session variables are declared
 	if (request.session.tfa_id && request.session.tfa_email) {
@@ -478,7 +526,12 @@ app.post('/twofactor', (request, response) => {
 	}
 });
 
-// http://localhost:{PORT}/home - display the home page
+////
+//
+// GET - http://localhost:{PORT}/home - display the home page
+//
+////
+
 app.get('/home', (request, response) => isLoggedin(request, settings => {
 	// Render home template
 	response.render('home.html', { username: request.session.account_username, role: request.session.account_role });
@@ -501,7 +554,12 @@ app.get('/profile', (request, response) => isLoggedin(request, settings => {
 	response.redirect('/');
 }));
 
-// http://localhost:{PORT}/edit_profile - displat the edit profile page
+////
+//
+// GET - http://localhost:{PORT}/edit_profile - display the edit profile page
+//
+////
+
 app.get('/edit_profile', (request, response) => isLoggedin(request, settings => {
 	// Get all the users account details so we can populate them on the profile page
 	connection.query('SELECT * FROM accounts WHERE username = ?', [request.session.account_username], (error, accounts, fields) => {
@@ -514,7 +572,13 @@ app.get('/edit_profile', (request, response) => isLoggedin(request, settings => 
 	// Redirect to login page
 	response.redirect('/');
 }));
-// http://localhost:{PORT}/edit_profile - update account details
+
+////
+//
+// POST - http://localhost:{PORT}/edit_profile - update account details
+//
+////
+
 app.post('/edit_profile', (request, response) => isLoggedin(request, settings => {
 	// Create variables for easy access
 	let username = request.body.username;
@@ -605,7 +669,12 @@ app.post('/edit_profile', (request, response) => isLoggedin(request, settings =>
 	}
 }));
 
-// http://localhost:{PORT}/logout - Logout page
+////
+//
+// GET - http://localhost:{PORT}/logout - Logout page
+//
+////
+
 app.get('/logout', (request, response) => {
 	// Destroy session data
 	request.session.destroy();
@@ -615,7 +684,12 @@ app.get('/logout', (request, response) => {
 	response.redirect('/');
 });
 
-// http://localhost:{PORT}/admin/ - Admin dashboard page
+////
+//
+// GET - http://localhost:{PORT}/admin/ - Admin dashboard page
+//
+////
+ 
 app.get('/admin/', (request, response) => isAdmin(request, settings => {
 	// Retrieve statistical data
 	connection.query('SELECT * FROM accounts WHERE cast(registered as DATE) = cast(now() as DATE) ORDER BY registered DESC; SELECT COUNT(*) AS total FROM accounts LIMIT 1; SELECT COUNT(*) AS total FROM accounts WHERE last_seen < date_sub(now(), interval 1 month) LIMIT 1; SELECT * FROM accounts WHERE last_seen > date_sub(now(), interval 1 day) ORDER BY last_seen DESC; SELECT COUNT(*) AS total FROM accounts WHERE last_seen > date_sub(now(), interval 1 month) LIMIT 1', (error, results, fields) => {
@@ -627,7 +701,12 @@ app.get('/admin/', (request, response) => isAdmin(request, settings => {
 	response.redirect('/');
 }));
 
-// http://localhost:{PORT}/admin/accounts - Admin accounts page
+////
+//
+// GET - http://localhost:{PORT}/admin/accounts - Admin accounts page
+//
+////
+
 app.get(['/admin/accounts', '/admin/accounts/:msg/:search/:status/:activation/:role/:order/:order_by/:page'], (request, response) => isAdmin(request, settings => {
 	// Params validation
 	let msg = request.params.msg == 'n0' ? '' : request.params.msg;
@@ -697,7 +776,12 @@ app.get(['/admin/accounts', '/admin/accounts/:msg/:search/:status/:activation/:r
 	response.redirect('/');
 }));
 
-// http://localhost:{PORT}/admin/account - Admin edit/create account
+////
+//
+// GET - http://localhost:{PORT}/admin/account - Admin edit/create account
+//
+////
+
 app.get(['/admin/account', '/admin/account/:id'], (request, response) => isAdmin(request, settings => {
 	// Default page (Create/Edit)
     let page = request.params.id ? 'Edit' : 'Create';
@@ -728,6 +812,12 @@ app.get(['/admin/account', '/admin/account/:id'], (request, response) => isAdmin
 	// Redirect to login page
 	response.redirect('/');
 }));
+
+////
+//
+// POST - http://localhost:{PORT}/admin/account - Admin edit/create account
+//
+////
 
 // http://localhost:{PORT}/admin/account - Admin edit/create account
 app.post(['/admin/account', '/admin/account/:id'], (request, response) => isAdmin(request, settings => {
@@ -767,7 +857,12 @@ app.post(['/admin/account', '/admin/account/:id'], (request, response) => isAdmi
 	response.redirect('/');
 }));
 
-// http://localhost:{PORT}/admin/account/delete/:id - Delete account based on the ID param
+////
+//
+// GET - http://localhost:{PORT}/admin/account/delete/:id - Delete account based on the ID param
+//
+////
+
 app.get('/admin/account/delete/:id', (request, response) => isAdmin(request, settings => {
     // GET request ID exists, delete account
     if (request.params.id) {
@@ -779,7 +874,12 @@ app.get('/admin/account/delete/:id', (request, response) => isAdmin(request, set
 	response.redirect('/');
 }));
 
-// http://localhost:{PORT}/admin/roles - View accounts roles
+////
+//
+// GET - http://localhost:{PORT}/admin/roles - View accounts roles
+//
+////
+
 app.get('/admin/roles', (request, response) => isAdmin(request, settings => {
 	// Roles list
 	let roles_list = ['Member', 'Admin'];
@@ -812,7 +912,12 @@ app.get('/admin/roles', (request, response) => isAdmin(request, settings => {
 	response.redirect('/');
 }));
 
-// http://localhost:{PORT}/admin/emailtemplate - View email templates (GET)
+////
+//
+// GET - http://localhost:{PORT}/admin/emailtemplate - View email templates
+//
+////
+
 app.get(['/admin/emailtemplate', '/admin/emailtemplate/:msg'], (request, response) => isAdmin(request, settings => {
 	// Output message
 	let msg = request.params.msg;
@@ -832,7 +937,12 @@ app.get(['/admin/emailtemplate', '/admin/emailtemplate/:msg'], (request, respons
 	response.redirect('/');
 }));
 
-// http://localhost:{PORT}/admin/emailtemplate - Update email templates (POST)
+////
+//
+// POST - http://localhost:{PORT}/admin/emailtemplate - Update email templates
+//
+////
+
 app.post(['/admin/emailtemplate', '/admin/emailtemplate/:msg'], (request, response) => isAdmin(request, settings => {
 	// If form submitted
 	if (request.body.activation_email_template && request.body.twofactor_email_template) {
@@ -847,7 +957,12 @@ app.post(['/admin/emailtemplate', '/admin/emailtemplate/:msg'], (request, respon
 	response.redirect('/');
 }));
 
-// http://localhost:{PORT}/admin/settings - View settings (GET)
+////
+//
+// GET - http://localhost:{PORT}/admin/settings - View settings
+//
+////
+
 app.get(['/admin/settings', '/admin/settings/:msg'], (request, response) => isAdmin(request, settings => {
 	// Output message
 	let msg = request.params.msg;
@@ -867,7 +982,12 @@ app.get(['/admin/settings', '/admin/settings/:msg'], (request, response) => isAd
 	response.redirect('/');
 }));
 
-// http://localhost:{PORT}/admin/settings - Update settings (POST)
+////
+//
+// POST - http://localhost:{PORT}/admin/settings - Update settings
+//
+////
+
 app.post(['/admin/settings', '/admin/settings/:msg'], (request, response) => isAdmin(request, settings => {
 	// Update settings
 	for (let item in request.body) {
@@ -885,7 +1005,12 @@ app.post(['/admin/settings', '/admin/settings/:msg'], (request, response) => isA
 	response.redirect('/');
 }));
 
-// http://localhost:{PORT}/admin/myaccount - Redirect to edit account page
+////
+//
+// GET - http://localhost:{PORT}/admin/myaccount - Redirect to edit account page
+//
+////
+
 app.get('/admin/myaccount', (request, response) => isAdmin(request, settings => {
 	// Redirect to edit account page
 	response.redirect('/admin/account/' + request.session.account_id);
@@ -894,7 +1019,12 @@ app.get('/admin/myaccount', (request, response) => isAdmin(request, settings => 
 	response.redirect('/');
 }));
 
-// http://localhost:{PORT}/admin/about - View about page
+////
+//
+// GET - http://localhost:{PORT}/admin/about - View about page
+//
+////
+
 app.get('/admin/about', (request, response) => isAdmin(request, settings => {
 	// Render about template
    	response.render('admin/about.html', { selected: 'about' });
@@ -903,7 +1033,13 @@ app.get('/admin/about', (request, response) => isAdmin(request, settings => {
 	response.redirect('/');
 }));
 
-// Function that checks whether the user is logged-in or not
+////
+//
+// Helper functions
+//
+////
+
+// Checks whether the user is logged-in or not
 const isLoggedin = (request, callback, callback2) => {
 	// Check if the loggedin param exists in session
 	init(request, settings => {
@@ -929,7 +1065,7 @@ const isLoggedin = (request, callback, callback2) => {
 	});
 };
 
-// Function is admin
+// Checks if admin
 const isAdmin = (request, callback, callback2) => {
 	isLoggedin(request, () => {
 		if (request.session.account_role == 'Admin') {
@@ -940,7 +1076,7 @@ const isAdmin = (request, callback, callback2) => {
 	}, callback2);
 };
 
-// Function init - check loggedin and retrieve settings
+// Check loggedin and retrieve settings
 const init = (request, callback) => {
 	if (request.session.account_loggedin) {
 		// Update last seen date
@@ -958,7 +1094,7 @@ const init = (request, callback) => {
 	});
 };
 
-// LoginAttempts function - prevents bruteforce attacks
+// Prevents bruteforce attacks
 const loginAttempts = (ip, update = true, callback) => {
 	// Get the current date
 	let d = new Date();
@@ -987,7 +1123,7 @@ const loginAttempts = (ip, update = true, callback) => {
 	});
 };
 
-// format settings key
+// Format settings key
 const settingsFormatKey = key => {
     key = key.toLowerCase().replaceAll('_', ' ').replace('url', 'URL').replace('db ', 'Database ').replace(' pass', ' Password').replace(' user', ' Username').replace(/\b\w/g, l => l.toUpperCase());
     return key;
@@ -1075,3 +1211,4 @@ const timeElapsedString = date => {
 
 // Listen on port {PORT} (http://localhost:{PORT}/)
 app.listen(process.env.PORT);
+console.log('Listening on port:', process.env.PORT);
