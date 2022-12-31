@@ -16,7 +16,7 @@ const logger = require('morgan');
 require('dotenv').config();
 
 // Unique secret key
-const secret_key = process.env.SECRET_KEY;
+const secret_key = 'secret_string'; // sessionprocess.env.SECRET_KEY;
 
 // Update the below details with your own MySQL connection details
 const connection = mysql.createConnection({
