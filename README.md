@@ -48,8 +48,6 @@ URL: `http://localhost:{PORT}/admin/`
 
 ### References 
 
-# AWS setup
-https://javascript.plainenglish.io/deploy-node-js-apps-on-aws-from-scratch-c227c44eeb2
+Source code: https://codeshack.io/basic-login-system-nodejs-express-mysql/, from https://codeshack.io/
 
-# NodeJS
-Based on this tutorial https://codeshack.io/basic-login-system-nodejs-express-mysql/, from https://codeshack.io/
+Deployment (Heroku): https://www.raddy.dev/blog/how-to-deploy-node-js-express-ejs-mysql-website-on-heroku-cleardb/
