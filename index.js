@@ -186,7 +186,13 @@ app.get('/register', (request, response) => isLoggedin(request, () => {
 	// User is not logged in, render login template
 	response.render('register.html', { token: token, settings: settings });
 }));
-// http://localhost:{PORT}/register - register user
+
+////
+//
+// POST - http://localhost:{PORT}/register - register user
+//
+////
+
 app.post('/register', (request, response) => init(request, settings => {
 	// Create variables and assign the POST data
 	let username = request.body.username;
