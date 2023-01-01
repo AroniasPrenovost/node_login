@@ -23,18 +23,17 @@ npm i
 
 **3.** Execute the `node_login.sql` file in MySQL Workbench. The SQL file includes a member and admin account for testing purposes.
 
-
-**4.** If you're using Windows, you can click the `Start_Server_(Windows).bat` file that is included. If not, execute the following in command line: 
+note: If you're using Windows, you can click the `Start_Server_(Windows).bat` file that is included. If not, execute the following in command line: 
 ```
 nodemon --use_strict index.js
 ```
 
-**5.** Start the server
+**4.** Start the server
 ```
 node index.js
 ```
 
-**6.** If you've successfully started the server, you can navigate to `http://localhost:{PORT}/` in your browser. It should take you to the login form.
+**5.** If you've successfully started the server, you can navigate to `http://localhost:{PORT}/` in your browser. It should take you to the login form.
 
 ### Admin Panel
 
