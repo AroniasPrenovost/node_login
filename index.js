@@ -16,24 +16,24 @@ const logger = require('morgan');
 require('dotenv').config();
 
 // Unique secret key
-const secret_key = 'secret_string'; // sessionprocess.env.SECRET_KEY;
+const secret_key = process.env.SECRET_KEY;
 
 // Update the below details with your own MySQL connection details
 const connection = mysql.createConnection({
-	host: 'us-cdbr-east-06.cleardb.net', // process.env.DB_HOST,
-	user: 'bf370a03226e5e', // process.env.DB_USER,
-	password: '1dbe9b83', // process.env.DB_PASSWORD,
-	database: 'heroku_649140a60adb7f9', // process.env.DB_NAME,
+	host: process.env.DB_HOST,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASSWORD,
+	database: process.env.DB_NAME,
 	multipleStatements: true
 });
 // Mail settings: Update the username and passowrd below to your email and pass, the current mail host is set to gmail, but you can change that if you want.
 const transporter = nodemailer.createTransport({
-	host: 'smtp.gmail.com',
-	port: 465,
+	host: process.env.MAILER_HOST,
+	port: process.env.MAILER_PORT,
 	secure: true,
 	auth: {
-		user: 'xxxxxx@xxxxxx.xxx',
-		pass: 'xxxxxx'
+		user: process.env.MAILER_USER,
+		pass: process.env.MAILER_PASSWORD
 	}
 });
 // Initialize express
