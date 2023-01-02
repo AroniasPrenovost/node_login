@@ -1,3 +1,4 @@
+require('dotenv').config();
 // Include the dependencies
 const mysql = require('mysql');
 const express = require('express');
@@ -13,7 +14,8 @@ const fetch = require('node-fetch');
 const { Console } = require('console');
 const { NodeResolveLoader } = require('nunjucks');
 const logger = require('morgan');
-require('dotenv').config();
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Unique secret key
 const secret_key = process.env.SECRET_KEY;
