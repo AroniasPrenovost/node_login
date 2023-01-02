@@ -49,4 +49,4 @@ Source code: https://codeshack.io/basic-login-system-nodejs-express-mysql/, from
 
 Deployment (Heroku): https://www.raddy.dev/blog/how-to-deploy-node-js-express-ejs-mysql-website-on-heroku-cleardb/
 
-Email setup: https://app.sendgrid.com/guide/integrate/langs/nodejs
+Email setup (SendGrid): https://app.sendgrid.com/guide/integrate/langs/nodejs

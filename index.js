@@ -14,8 +14,6 @@ const fetch = require('node-fetch');
 const { Console } = require('console');
 const { NodeResolveLoader } = require('nunjucks');
 const logger = require('morgan');
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Unique secret key
 const secret_key = process.env.SECRET_KEY;
@@ -258,40 +256,22 @@ app.post('/register', (request, response) => init(request, settings => {
 				// Get the activation email template
 				let activationTemplate = fs.readFileSync(path.join(__dirname, 'views/activation-email-template.html'), 'utf8').replaceAll('%link%', activateLink);
 				// Change the below mail options
-		        // let mailOptions = {
-		        //     from: settings['mail_from'], // "Your Name / Business name" <xxxxxx@gmail.com>
-		        //     to: email,
-		        //     subject: 'Account Activation Required',
-		        //     text: activationTemplate.replace(/<\/?[^>]+(>|$)/g, ''),
-		        //     html: activationTemplate
-		        // };
+		        let mailOptions = {
+		            from: settings['mail_from'], // "Your Name / Business name" <xxxxxx@gmail.com>
+		            to: email,
+		            subject: 'Account Activation Required',
+		            text: activationTemplate.replace(/<\/?[^>]+(>|$)/g, ''),
+		            html: activationTemplate
+		        };
 				// Insert account with activation code
 				connection.query('INSERT INTO accounts (username, password, email, activation_code, role, ip) VALUES (?, ?, ?, ?, ?, ?)', [username, hashedPassword, email, activationCode, role, ip], () => {
 					// Send activation email
-					// transporter.sendMail(mailOptions, (error, info) => {
-			  //           if (error) {
-			  //               return console.log(error);
-			  //           }
-			  //           console.log('Message %s sent: %s', info.messageId, info.response);
-			  //       });
-
-					const msg = {
-					  to: email, // Change to your recipient
-					  from: settings['mail_from'], // Change to your verified sender
-					  subject: 'Account Activation Required',
-        		text: activationTemplate.replace(/<\/?[^>]+(>|$)/g, ''),
-		        html: activationTemplate
-					}
-					sgMail
-					  .send(msg)
-					  .then(() => {
-					    console.log('Account Activation email sent: ', email);
-					  })
-					  .catch((error) => {
-					    console.error(error)
-					  })
-
-
+					transporter.sendMail(mailOptions, (error, info) => {
+			            if (error) {
+			                return console.log(error);
+			            }
+			            console.log('Message %s sent: %s', info.messageId, info.response);
+			        });
 					response.send('Please check your email to activate your account!');
 					response.end();
 				});
