@@ -341,7 +341,13 @@ app.get('/forgotpassword', (request, response) => {
 	// Render forgot password template and output message
 	response.render('forgotpassword.html');	
 });
-// http://localhost:{PORT}/forgotpassword - update account details
+
+////
+//
+// POST - http://localhost:{PORT}/forgotpassword - update account details
+//
+////
+
 app.post('/forgotpassword', (request, response) => init(request, settings => {
 	// Render activate template and output message
 	if (request.body.email) {
