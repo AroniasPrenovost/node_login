@@ -40,7 +40,7 @@
 
   INSERT INTO `settings` (`id`, `setting_key`, `setting_value`, `category`) VALUES
   (1, 'account_activation', 'false', 'General'),
-  (2, 'mail_from', 'Your Company Name <noreply@yourdomain.com>', 'General'),
+  (2, 'mail_from', 'Node login <support@node-login.herokuapp>', 'General'),
   (3, 'csrf_protection', 'false', 'Add-ons'),
   (4, 'brute_force_protection', 'false', 'Add-ons'),
   (5, 'twofactor_protection', 'false', 'Add-ons'),
