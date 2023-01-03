@@ -16,9 +16,10 @@ const { NodeResolveLoader } = require('nunjucks');
 const logger = require('morgan');
 
 const sgMail = require('@sendgrid/mail')
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+var emaill = 'aronprenovostmktg@gmail.com';
 const msg = {
-  to: 'aronprenovostmktg@gmail.com', // Change to your recipient
+  to: emaill, // Change to your recipient
   from: 'aronprenovostmktg@gmail.com', // Change to your verified sender
   subject: 'Sending with SendGrid is Fun',
   text: 'and easy to do anywhere, even with Node.js',
@@ -27,7 +28,7 @@ const msg = {
 sgMail
   .send(msg)
   .then(() => {
-    console.log('Email sent')
+    console.log(`Email sent to ${emaill}`);
   })
   .catch((error) => {
     console.error(error)
