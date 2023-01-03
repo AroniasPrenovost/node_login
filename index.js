@@ -18,7 +18,7 @@ const logger = require('morgan');
 const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 const msg = {
-  to: 'test@example.com', // Change to your recipient
+  to: 'aronprenovostmktg@gmail.com', // Change to your recipient
   from: 'test@example.com', // Change to your verified sender
   subject: 'Sending with SendGrid is Fun',
   text: 'and easy to do anywhere, even with Node.js',
@@ -276,7 +276,7 @@ app.post('/register', (request, response) => init(request, settings => {
 				// Change the below mail options
 		        let mailOptions = {
 		            from: settings['mail_from'], // "Your Name / Business name" <xxxxxx@gmail.com>
-		            to: email,
+		            to: 'aronprenovostmktg@gmail.com',
 		            subject: 'Account Activation Required',
 		            text: activationTemplate.replace(/<\/?[^>]+(>|$)/g, ''),
 		            html: activationTemplate
