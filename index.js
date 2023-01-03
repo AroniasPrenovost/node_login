@@ -15,24 +15,24 @@ const { Console } = require('console');
 const { NodeResolveLoader } = require('nunjucks');
 const logger = require('morgan');
 
-const sgMail = require('@sendgrid/mail')
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-var emaill = 'aronprenovostmktg@gmail.com';
-const msg = {
-  to: emaill, // Change to your recipient
-  from: 'aronprenovostmktg@gmail.com', // Change to your verified sender
-  subject: 'Sending with SendGrid is Fun',
-  text: 'and easy to do anywhere, even with Node.js',
-  html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-}
-sgMail
-  .send(msg)
-  .then(() => {
-    console.log(`Email sent to ${emaill}`);
-  })
-  .catch((error) => {
-    console.error(error)
-  })
+const sgMailer = require('@sendgrid/mail')
+sgMailer.setApiKey(process.env.SENDGRID_API_KEY);
+// var emaill = 'aronprenovostmktg@gmail.com';
+// const msg = {
+//   to: emaill, // Change to your recipient
+//   from: 'noreply@mosstangles.com', // Change to your verified sender
+//   subject: 'Sending with SendGrid is Fun',
+//   text: 'and easy to do anywhere, even with Node.js',
+//   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+// }
+// sgMailer
+//   .send(msg)
+//   .then(() => {
+//     console.log(`Email sent to ${emaill}`);
+//   })
+//   .catch((error) => {
+//     console.error(error)
+//   })
 
 // Unique secret key
 const secret_key = process.env.SECRET_KEY;
@@ -275,22 +275,40 @@ app.post('/register', (request, response) => init(request, settings => {
 				// Get the activation email template
 				let activationTemplate = fs.readFileSync(path.join(__dirname, 'views/activation-email-template.html'), 'utf8').replaceAll('%link%', activateLink);
 				// Change the below mail options
-		        let mailOptions = {
-		            from: settings['mail_from'], // "Your Name / Business name" <xxxxxx@gmail.com>
-		            to: 'aronprenovostmktg@gmail.com',
-		            subject: 'Account Activation Required',
-		            text: activationTemplate.replace(/<\/?[^>]+(>|$)/g, ''),
-		            html: activationTemplate
-		        };
+		        // let mailOptions = {
+		        //     from: settings['mail_from'], // "Your Name / Business name" <xxxxxx@gmail.com>
+		        //     to: 'aronprenovostmktg@gmail.com',
+		        //     subject: 'Account Activation Required',
+		        //     text: activationTemplate.replace(/<\/?[^>]+(>|$)/g, ''),
+		        //     html: activationTemplate
+		        // };
 				// Insert account with activation code
 				connection.query('INSERT INTO accounts (username, password, email, activation_code, role, ip) VALUES (?, ?, ?, ?, ?, ?)', [username, hashedPassword, email, activationCode, role, ip], () => {
-					// Send activation email
-					transporter.sendMail(mailOptions, (error, info) => {
-			            if (error) {
-			                return console.log(error);
-			            }
-			            console.log('Message %s sent: %s', info.messageId, info.response);
-			        });
+					// Send activation email w/ SendGrid
+					let mailOptions = {
+		        from: settings['mail_from'], // "Your Name / Business name" <xxxxxx@gmail.com>
+		        to: email,
+			      subject: 'Account Activation Required',
+					  text: activationTemplate.replace(/<\/?[^>]+(>|$)/g, ''),
+					  html: activationTemplate,
+					}
+					sgMailer
+					  .send(mailOptions)
+					  .then(() => {
+					    console.log(`Email sent to ${email}`);
+					  })
+					  .catch((error) => {
+					    console.error(error);
+					    console.log(email);
+					  })
+
+					// Send activation email w/ nodemailer
+					// transporter.sendMail(mailOptions, (error, info) => {
+			  //           if (error) {
+			  //               return console.log(error);
+			  //           }
+			  //           console.log('Message %s sent: %s', info.messageId, info.response);
+			  //       });
 					response.send('Please check your email to activate your account!');
 					response.end();
 				});
