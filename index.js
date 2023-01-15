@@ -84,11 +84,29 @@ if (app.get('env') == 'production') {
 
 ////
 //
-// GET - http://localhost:{PORT}/ - display login page
+// GET - http://localhost:{PORT} - landing page
 //
 ////
 
-app.get(['/', '/login'], (request, response) => isLoggedin(request, () => {
+app.get(['/'], (request, response) => isLoggedin(request, () => {
+	// User is logged in, redirect to home page
+	response.render('index.html');
+}, () => {
+	// Create CSRF token
+	let token = cryptography.randomBytes(20).toString('hex');
+	// Store token in session
+	request.session.token = token;
+	// User is not logged in, render login template
+	response.render('index.html', { token: token });
+}));
+
+////
+//
+// GET - http://localhost:{PORT}/login - display login page
+//
+////
+
+app.get(['/login'], (request, response) => isLoggedin(request, () => {
 	// User is logged in, redirect to home page
 	response.redirect('/home');
 }, () => {
@@ -97,7 +115,7 @@ app.get(['/', '/login'], (request, response) => isLoggedin(request, () => {
 	// Store token in session
 	request.session.token = token;
 	// User is not logged in, render login template
-	response.render('index.html', { token: token });
+	response.render('login.html', { token: token });
 }));
 
 ////
