@@ -21,13 +21,15 @@
             {{ account.email }}
         </div>
 
-        <div class="profile-detail">
-            <strong>Role</strong>
-            {{ account.role }}
-        </div>
+        {% if role == 'Admin' %}
+            <div class="profile-detail">
+                <strong>Role</strong>
+                {{ account.role }}
+            </div>
+        {% endif %}
 
         <div class="profile-detail">
-            <strong>Registered</strong>
+            <strong>Member since</strong>
             {{ account.registered }}
         </div>
 
