@@ -52,7 +52,7 @@ $(document).ready(function () {
 
         $('#rotate').rotaterator({
             fadeSpeed: 1000,
-            pauseSpeed: 300
+            pauseSpeed: 2000
         });
     }
 

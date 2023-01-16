@@ -75,6 +75,8 @@ h3 {
 
 .tm-video-text {
     display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .tm-welcome-video {
@@ -91,7 +93,7 @@ h3 {
 
 .tm-video-text-overlay {
     position: absolute;
-    left: 60%;
+    left: 52%;
     bottom: 30px;
 }
 .tm-video-text-overlay h1 {
@@ -288,7 +290,7 @@ p {
         max-height: 466px;
     }
     .tm-video-text-overlay {
-        left: 60%;
+        left: 52%;
     }
 }
 
