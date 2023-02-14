@@ -27,26 +27,26 @@ const connection = mysql.createConnection({
 	multipleStatements: true
 });
 
-// Email configuration: Follow SendGrid setup instructions
+// Email configuration: refer to SendGrid setup instructions
 const sendgridMailer = require('@sendgrid/mail')
 sendgridMailer.setApiKey(process.env.SENDGRID_API_KEY);
-// * IMPLEMENETATION *
-// var email = 'recipient_email_address@verified_email_domain.com';
-// const message = {
-//   to: email,
-//   from: 'noreply@verified_email_domain.com', // Change to your verified sender
-//   subject: 'Sending with SendGrid is Fun',
-//   text: 'and easy to do anywhere, even with Node.js',
-//   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-// }
-// sendgridMailer
-//   .send(message)
-//   .then(() => {
-//     console.log(`Email sent to ${email}`);
-//   })
-//   .catch((error) => {
-//     console.error(error)
-//   })
+/*
+	let mailOptions = {
+		from: settings['mail_from'], // "Your Name / Business name" <xxxxxx@gmail.com>
+		to: email,
+		subject: 'Account Activation Required',
+		text: activationTemplate.replace(/<\/?[^>]+(>|$)/g, ''),
+		html: activationTemplate,
+	}
+	sendgridMailer
+		.send(mailOptions)
+		.then(() => {
+			console.log(`Email sent to ${email}`);
+		})
+		.catch((error) => {
+			console.error(error)
+		})
+*/
 
 // Initialize express
 const app = express();
