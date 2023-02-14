@@ -17,18 +17,19 @@ const logger = require('morgan');
 
 const sgMailer = require('@sendgrid/mail')
 sgMailer.setApiKey(process.env.SENDGRID_API_KEY);
-// var emaill = 'aronprenovostmktg@gmail.com';
-// const msg = {
-//   to: emaill, // Change to your recipient
-//   from: 'noreply@mosstangles.com', // Change to your verified sender
+// * IMPLEMENETATION *
+// var email = 'recipient_email_address@verified_email_domain.com';
+// const message = {
+//   to: email,
+//   from: 'noreply@verified_email_domain.com', // Change to your verified sender
 //   subject: 'Sending with SendGrid is Fun',
 //   text: 'and easy to do anywhere, even with Node.js',
 //   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
 // }
 // sgMailer
-//   .send(msg)
+//   .send(message)
 //   .then(() => {
-//     console.log(`Email sent to ${emaill}`);
+//     console.log(`Email sent to ${email}`);
 //   })
 //   .catch((error) => {
 //     console.error(error)
