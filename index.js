@@ -15,8 +15,21 @@ const { Console } = require('console');
 const { NodeResolveLoader } = require('nunjucks');
 const logger = require('morgan');
 
-const sgMailer = require('@sendgrid/mail')
-sgMailer.setApiKey(process.env.SENDGRID_API_KEY);
+// Unique secret key
+const secret_key = process.env.SECRET_KEY;
+
+// Configure MySQL connection
+const connection = mysql.createConnection({
+	host: process.env.DB_HOST,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASSWORD,
+	database: process.env.DB_NAME,
+	multipleStatements: true
+});
+
+// Email configuration: Follow SendGrid setup instructions
+const sendgridMailer = require('@sendgrid/mail')
+sendgridMailer.setApiKey(process.env.SENDGRID_API_KEY);
 // * IMPLEMENETATION *
 // var email = 'recipient_email_address@verified_email_domain.com';
 // const message = {
@@ -26,7 +39,7 @@ sgMailer.setApiKey(process.env.SENDGRID_API_KEY);
 //   text: 'and easy to do anywhere, even with Node.js',
 //   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
 // }
-// sgMailer
+// sendgridMailer
 //   .send(message)
 //   .then(() => {
 //     console.log(`Email sent to ${email}`);
@@ -35,27 +48,6 @@ sgMailer.setApiKey(process.env.SENDGRID_API_KEY);
 //     console.error(error)
 //   })
 
-// Unique secret key
-const secret_key = process.env.SECRET_KEY;
-
-// Update the below details with your own MySQL connection details
-const connection = mysql.createConnection({
-	host: process.env.DB_HOST,
-	user: process.env.DB_USER,
-	password: process.env.DB_PASSWORD,
-	database: process.env.DB_NAME,
-	multipleStatements: true
-});
-// Mail settings: Update the username and passowrd below to your email and pass, the current mail host is set to gmail, but you can change that if you want.
-const transporter = nodemailer.createTransport({
-	host: process.env.MAILER_HOST,
-	port: process.env.MAILER_PORT,
-	secure: true,
-	auth: {
-		user: process.env.MAILER_USER,
-		pass: process.env.MAILER_PASSWORD
-	}
-});
 // Initialize express
 const app = express();
 // Configure nunjucks template engine
@@ -293,14 +285,6 @@ app.post('/register', (request, response) => init(request, settings => {
 				let activateLink = request.protocol + '://' + request.get('host') + '/activate/' + email + '/' + activationCode;
 				// Get the activation email template
 				let activationTemplate = fs.readFileSync(path.join(__dirname, 'views/activation-email-template.html'), 'utf8').replaceAll('%link%', activateLink);
-				// Change the below mail options
-		        // let mailOptions = {
-		        //     from: settings['mail_from'], // "Your Name / Business name" <xxxxxx@gmail.com>
-		        //     to: 'aronprenovostmktg@gmail.com',
-		        //     subject: 'Account Activation Required',
-		        //     text: activationTemplate.replace(/<\/?[^>]+(>|$)/g, ''),
-		        //     html: activationTemplate
-		        // };
 				// Insert account with activation code
 				connection.query('INSERT INTO accounts (username, password, email, activation_code, role, ip) VALUES (?, ?, ?, ?, ?, ?)', [username, hashedPassword, email, activationCode, role, ip], () => {
 					// Send activation email w/ SendGrid
@@ -311,7 +295,7 @@ app.post('/register', (request, response) => init(request, settings => {
 					  text: activationTemplate.replace(/<\/?[^>]+(>|$)/g, ''),
 					  html: activationTemplate,
 					}
-					sgMailer
+					sendgridMailer
 					  .send(mailOptions)
 					  .then(() => {
 					    console.log(`Email sent to ${email}`);
@@ -321,13 +305,6 @@ app.post('/register', (request, response) => init(request, settings => {
 					    console.log(email);
 					  })
 
-					// Send activation email w/ nodemailer
-					// transporter.sendMail(mailOptions, (error, info) => {
-			  //           if (error) {
-			  //               return console.log(error);
-			  //           }
-			  //           console.log('Message %s sent: %s', info.messageId, info.response);
-			  //       });
 					response.send('Please check your email to activate your account!');
 					response.end();
 				});
@@ -427,12 +404,16 @@ app.post('/forgotpassword', (request, response) => init(request, settings => {
 				// Update reset column in db
 				connection.query('UPDATE accounts SET reset = ? WHERE email = ?', [resetCode, request.body.email]);
 				// Send reset password email
-				transporter.sendMail(mailOptions, (error, info) => {
-					if (error) {
-						return console.log(error);
-					}
-					console.log('Message %s sent: %s', info.messageId, info.response);
-				});
+				sendgridMailer
+					.send(mailOptions)
+					.then((response) => {
+						// console.log(`Email sent to ${email}`);
+						console.log('Message %s sent: %s', response.messageId, response.response);
+					})
+					.catch((error) => {
+						console.error(error);
+						console.log(email);
+					})
 				// Render forgot password template
 				response.render('forgotpassword.html', { msg: 'Reset password link has been sent to your email!' });
 			} else {
@@ -541,12 +522,16 @@ app.get('/twofactor', (request, response) => init(request, settings => {
 		// Update tfa code column in db
 		connection.query('UPDATE accounts SET tfa_code = ? WHERE id = ?', [twofactorCode, request.session.tfa_id]);
 		// Send tfa email
-		transporter.sendMail(mailOptions, (error, info) => {
-			if (error) {
-				return console.log(error);
-			}
-			console.log('Message %s sent: %s', info.messageId, info.response);
-		});
+		sendgridMailer
+			.send(mailOptions)
+			.then((response) => {
+				// console.log(`Email sent to ${email}`);
+				console.log('Message %s sent: %s', response.messageId, response.response);
+			})
+			.catch((error) => {
+				console.error(error);
+				console.log(email);
+			})
 		// Render twofactor template
 		response.render('twofactor.html');	
 	} else {
@@ -720,12 +705,16 @@ app.post('/edit_profile', (request, response) => isLoggedin(request, settings =>
 					// Account activation required?
 					if (requiresActivation) {
 						// Send activation email
-						transporter.sendMail(mailOptions, (error, info) => {
-							if (error) {
-								return console.log(error);
-							}
-							console.log('Message %s sent: %s', info.messageId, info.response);
-						});
+						sendgridMailer
+							.send(mailOptions)
+							.then((response) => {
+								// console.log(`Email sent to ${email}`);
+								console.log('Message %s sent: %s', response.messageId, response.response);
+							})
+							.catch((error) => {
+								console.error(error);
+								console.log(email);
+							})
 						// Update msg
 						msg = 'You have changed your email address! You need to re-activate your account! You will be automatically logged-out.';	
 						// Destroy session data
