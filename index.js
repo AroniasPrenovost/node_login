@@ -2,7 +2,7 @@ require('dotenv').config();
 // Include the dependencies
 const mysql = require('mysql');
 const express = require('express');
-const session = require('express-session');
+const session = require('cookie-session');
 const path = require('path');
 const nunjucks = require('nunjucks');
 const nodemailer = require('nodemailer');
