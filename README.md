@@ -48,8 +48,8 @@ Sign up for a free account with SendGrid and follow the setup instructions:
 
 ### Deployment
 
-Deploy using Heroku: https://www.raddy.dev/blog/how-to-deploy-node-js-express-ejs-mysql-website-on-heroku-cleardb/
+Deploy using Heroku and ClearDB: https://www.raddy.dev/blog/how-to-deploy-node-js-express-ejs-mysql-website-on-heroku-cleardb/
 
 ### References 
 
-Source code: https://codeshack.io/basic-login-system-nodejs-express-mysql/, from https://codeshack.io/
+https://codeshack.io/
