@@ -42,14 +42,8 @@ URL: `http://localhost:{PORT}/admin/`
 
 ### Email Setup
 
-Sign up for a free account with SendGrid and follow the setup instructions:
- - https://app.sendgrid.com/guide/integrate/langs/nodejs
- - https://app.sendgrid.com/guide/integrate/langs/nodejs/verify
+Sign up for a free account with SendGrid and follow the setup instructions: https://app.sendgrid.com/guide/integrate/langs/nodejs
 
 ### Deployment
 
 Deploy using Heroku and ClearDB: https://www.raddy.dev/blog/how-to-deploy-node-js-express-ejs-mysql-website-on-heroku-cleardb/
-
-### References 
-
-https://codeshack.io/
