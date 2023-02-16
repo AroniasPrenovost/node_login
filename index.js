@@ -718,7 +718,7 @@ app.post('/edit_profile', (request, response) => isLoggedin(request, settings =>
 						// Update msg
 						msg = 'You have changed your email address! You need to re-activate your account! You will be automatically logged-out.';	
 						// Destroy session data
-						request.session.destroy();					
+						request.session = null;
 					}
 					// Get account details from database
 					connection.query('SELECT * FROM accounts WHERE username = ?', [username], (error, accounts, fields) => {
@@ -747,7 +747,7 @@ app.post('/edit_profile', (request, response) => isLoggedin(request, settings =>
 
 app.get('/logout', (request, response) => {
 	// Destroy session data
-	request.session.destroy();
+	request.session = null;
 	// Clear remember me cookie
 	response.clearCookie('rememberme');
 	// Redirect to login page
