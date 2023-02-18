@@ -1195,8 +1195,8 @@ const loginAttempts = (ip, update = true, callback) => {
 
 // Format settings key
 const settingsFormatKey = key => {
-    key = key.toLowerCase().replaceAll('_', ' ').replace('url', 'URL').replace('db ', 'Database ').replace(' pass', ' Password').replace(' user', ' Username').replace(/\b\w/g, l => l.toUpperCase());
-    return key;
+    key = key.toLowerCase().replace(/\s/g, '_').replace('url', 'URL').replace('db ', 'Database ').replace(' pass', ' Password').replace(' user', ' Username').replace(/\b\w/g, l => l.toUpperCase());
+		return key;
 };
 
 // Format settings variables in HTML format
