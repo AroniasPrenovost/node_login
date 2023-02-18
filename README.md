@@ -47,3 +47,4 @@ Sign up for a free account with SendGrid and follow the setup instructions: http
 ### Deployment
 
 Deploy using Heroku and ClearDB: https://www.raddy.dev/blog/how-to-deploy-node-js-express-ejs-mysql-website-on-heroku-cleardb/
+  - Note: ClearDB sets the `auto_increment` value globally to `10` to facilitate their cluster functionality. This does not appear to be overridable. 
